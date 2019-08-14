@@ -38,6 +38,7 @@
                      html += '</div>';
                      $("#comments").append(html);
                  });
+                 $('a').attr('target', '_blank').attr('rel', 'nofollow');
                  window.parent.postMessage({
                      sentinel: 'amp',
                      type: 'embed-size',
