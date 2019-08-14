@@ -19,7 +19,7 @@
              headers: {Accept: "application/vnd.github.v3.html+json"},
              dataType: "json",
              success: function(comments) {
-                 var issue_link = '<div class="text-center h4 p-3">';
+                 var issue_link = '<div class="text-center h5 p-3">';
                  issue_link += 'Visit the <b><a href="'+issue_url+'">GitHub issue</a></b> to comment on this post.';
                  issue_link += '</div>';
                  $("#comments").append(issue_link);
@@ -38,6 +38,11 @@
                      html += '</div>';
                      $("#comments").append(html);
                  });
+                 window.parent.postMessage({
+                     sentinel: 'amp',
+                     type: 'embed-size',
+                     height: document.body.scrollHeight
+                 }, '*');
              },
              error: function() {
                  $('#comments').append("Failed to fetch comments for this post.");
