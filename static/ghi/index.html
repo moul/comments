@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Comments on Manfred.life</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" integrity="sha256-HbgiGHMLxHZ3kkAiixyvnaaZFNjNWLYKD/QG6PWaQPc=" crossorigin="anonymous" />
+  </head>
+  <body>
+    <div class="container-fluid" id="comments">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+         var issue_url = (new URL(location.href)).searchParams.get("url");
+         var api_url = "https://api.github.com/repos" + (new URL(issue_url)).pathname + "/comments";
+         $.ajax(api_url, {
+             headers: {Accept: "application/vnd.github.v3.html+json"},
+             dataType: "json",
+             success: function(comments) {
+                 var issue_link = '<div class="text-center h4 p-3">';
+                 issue_link += 'Visit the <b><a href="'+issue_url+'">GitHub issue</a></b> to comment on this post.';
+                 issue_link += '</div>';
+                 $("#comments").append(issue_link);
+                 $.each(comments, function(i, comment) {
+                     var date = new Date(comment.created_at);
+                     var html = '<div class="card p-2 mb-3">';
+                     html += '  <div class="media">';
+                     html += '    <img src="' + comment.user.avatar_url + '" class="align-self-start mr-3" width="48px" height="48px">';
+                     html += '    <div class="media-body">';
+                     html += '      <div class="mt-0">';
+                     html += '        <b><a href="' + comment.user.html_url + '">' + comment.user.login + '</a></b> posted at <em>' + date.toUTCString() + '</em>';
+                     html += '      </div>'
+                     html += '      <div class="markdown-body pt-1 bt-1">' + comment.body_html + '</div>';
+                     html += '    </div>';
+                     html += '  </div>';
+                     html += '</div>';
+                     $("#comments").append(html);
+                 });
+             },
+             error: function() {
+                 $('#comments').append("Failed to fetch comments for this post.");
+             }
+         });
+     });
+    </script>
+  </body>
+</html>

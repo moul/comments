@@ -1,0 +1,8 @@
+# Temporary files
+*~
+*#
+.#*
+
+# Vendors
+node_modules/
+vendor/
